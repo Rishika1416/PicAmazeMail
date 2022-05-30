@@ -100,7 +100,15 @@ class Shopify:
                 time.sleep(1)
                 finish=True
             elif finish==False:
-                continue
+                if len(r[2].split('\n'))==2:
+                    activity=r[2].split('\n')[1]
+                else:
+                    activity=r[2]
+                WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable((By.LINK_TEXT,r[1]))).click()
+                element=self.driver.find_element_by_xpath('//*[@id="AppFrameMain"]/div/div/div[2]/div/section[1]/div[3]/p[1]/a')
+                list_activity[activity].append(element.text)
+                self.driver.execute_script("window.history.go(-1)")
+                time.sleep(1)
             else:
                 break
         return list_activity
